@@ -31,6 +31,8 @@ public class TareasContext: DbContext  // Heredamos de la clase DbContext
             
             categoria.Property(p=> p.Descripcion);
 
+            categoria.Property(p=> p.Peso);
+
         });
 
         //diseñamos el modelo de tareas:
@@ -39,6 +41,7 @@ public class TareasContext: DbContext  // Heredamos de la clase DbContext
             tarea.ToTable("Tarea"); 
             tarea.HasKey(p=> p.TareaId);
             
+            //existe una propiedad dentro de Tarea que se llama Categoria, esta puede tener relacion con multiples(WithMany) Tareas, existe una clave foranea llamada CategoriaId
             tarea.HasOne(p=> p.Categoria).WithMany(p=> p.Tareas).HasForeignKey(p=> p.CategoriaId);
             
             tarea.Property(p=> p.Titulo).IsRequired().HasMaxLength(200);
@@ -48,6 +51,8 @@ public class TareasContext: DbContext  // Heredamos de la clase DbContext
             tarea.Property(p=> p.PrioridadTarea);
             
             tarea.Property(p=> p.FechaCreacion);
+            
+            tarea.Ignore(p=> p.Resumen);
 
         });
     }
