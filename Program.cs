@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;       //FromServices
 using Microsoft.EntityFrameworkCore;
 using proyectoef;   //el namespace de TareasContext
+using proyectoef.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,19 @@ app.MapGet("/dbconexion", async([FromServices] TareasContext dbContext) =>
 app.MapGet("/api/tareas", async ([FromServices] TareasContext dbContext)=>
 {
     return Results.Ok(dbContext.Tareas);
+});
+
+//POST
+app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea)=>
+{
+    tarea.TareaId = Guid.NewGuid();
+    tarea.FechaCreacion = DateTime.Now;
+    await dbContext.AddAsync(tarea);
+    //await dbContext.Tareas.AddAsync(tarea);  //otra manera
+
+    await dbContext.SaveChangesAsync();
+
+    return Results.Ok();
 });
 
 //filtra datos con prioridad baja
