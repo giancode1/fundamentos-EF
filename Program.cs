@@ -18,6 +18,7 @@ builder.Services.AddSqlServer<TareasContext>(builder.Configuration.GetConnection
 
 var app = builder.Build(); //la aplicacion se construye
 
+// * GET
 app.MapGet("/", () => "Hello World!");
 
 // FromServices : recibimos el contexto de EF
@@ -36,7 +37,7 @@ app.MapGet("/api/tareas", async ([FromServices] TareasContext dbContext)=>
     return Results.Ok(dbContext.Tareas);
 });
 
-//POST
+// * POST
 app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea)=>
 {
     tarea.TareaId = Guid.NewGuid();
@@ -47,6 +48,25 @@ app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromB
     await dbContext.SaveChangesAsync();
 
     return Results.Ok();
+});
+
+// * PUT
+app.MapPut("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea, [FromRoute] Guid id)=>
+{
+    var tareaActual = dbContext.Tareas.Find(id);
+
+    if(tareaActual != null)
+    {
+        tareaActual.CategoriaId = tarea.CategoriaId;
+        tareaActual.Titulo = tarea.Titulo;
+        tareaActual.PrioridadTarea = tarea.PrioridadTarea;
+        tareaActual.Descripcion = tarea.Descripcion;
+
+        await dbContext.SaveChangesAsync();
+        return Results.Ok();
+    }
+
+    return Results.NotFound();
 });
 
 //filtra datos con prioridad baja
