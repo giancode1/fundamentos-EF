@@ -20,6 +20,13 @@ public class TareasContext: DbContext  // Heredamos de la clase DbContext
     // metodo override no puede ser publico
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //crear data inicial: crearemos nueva colección de Categoria
+        List<Categoria> categoriasInit = new List<Categoria>();
+        //agregamos nuevo obj a categoriasInit
+        categoriasInit.Add(new Categoria() {CategoriaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb98a"), Nombre = "Actividades pendientes", Peso = 20 });
+        categoriasInit.Add(new Categoria() {CategoriaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb902"), Nombre = "Actividades personales", Peso = 50 });
+        categoriasInit.Add(new Categoria() {CategoriaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb903"), Nombre = "Actividades laborales", Peso = 70 });
+        
         //diseñamos el modelo de categorias:
         modelBuilder.Entity<Categoria>(categoria=> 
         {
@@ -29,12 +36,19 @@ public class TareasContext: DbContext  // Heredamos de la clase DbContext
 
             categoria.Property(p=> p.Nombre).IsRequired().HasMaxLength(150);
             
-            categoria.Property(p=> p.Descripcion);
+            categoria.Property(p=> p.Descripcion).IsRequired(false);
 
             categoria.Property(p=> p.Peso);
+            
+            //recibe un vector de categorias
+            categoria.HasData(categoriasInit);
 
         });
 
+        List<Tarea> tareasInit = new List<Tarea>();
+        tareasInit.Add(new Tarea() { TareaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb910"), CategoriaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb98a") , PrioridadTarea = Prioridad.Media, Titulo = "Pago de servicios públicos", FechaCreacion = DateTime.Now });
+        tareasInit.Add(new Tarea() { TareaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb911"), CategoriaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb902") , PrioridadTarea = Prioridad.Baja, Titulo = "Terminar de ver pelicula en Netflix", FechaCreacion = DateTime.Now });
+        tareasInit.Add(new Tarea() { TareaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb912"), CategoriaId = Guid.Parse("4e26179c-6a70-41bc-8e78-69c6b77cb903") , PrioridadTarea = Prioridad.Alta, Titulo = "Terminar Reporte", FechaCreacion = DateTime.Now });
         //diseñamos el modelo de tareas:
         modelBuilder.Entity<Tarea>(tarea=> 
         {
@@ -46,13 +60,15 @@ public class TareasContext: DbContext  // Heredamos de la clase DbContext
             
             tarea.Property(p=> p.Titulo).IsRequired().HasMaxLength(200);
             
-            tarea.Property(p=> p.Descripcion);
+            tarea.Property(p=> p.Descripcion).IsRequired(false);
             
             tarea.Property(p=> p.PrioridadTarea);
             
             tarea.Property(p=> p.FechaCreacion);
             
             tarea.Ignore(p=> p.Resumen);
+            
+            tarea.HasData(tareasInit);
 
         });
     }

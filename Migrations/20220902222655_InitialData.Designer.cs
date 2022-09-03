@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using proyectoef;
 
@@ -11,9 +12,10 @@ using proyectoef;
 namespace proyectoef.Migrations
 {
     [DbContext(typeof(TareasContext))]
-    partial class TareasContextModelSnapshot : ModelSnapshot
+    [Migration("20220902222655_InitialData")]
+    partial class InitialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,12 +57,6 @@ namespace proyectoef.Migrations
                             CategoriaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb902"),
                             Nombre = "Actividades personales",
                             Peso = 50
-                        },
-                        new
-                        {
-                            CategoriaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb903"),
-                            Nombre = "Actividades laborales",
-                            Peso = 70
                         });
                 });
 
@@ -98,7 +94,7 @@ namespace proyectoef.Migrations
                         {
                             TareaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb910"),
                             CategoriaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb98a"),
-                            FechaCreacion = new DateTime(2022, 9, 2, 17, 55, 14, 404, DateTimeKind.Local).AddTicks(2638),
+                            FechaCreacion = new DateTime(2022, 9, 2, 17, 26, 55, 343, DateTimeKind.Local).AddTicks(9183),
                             PrioridadTarea = 1,
                             Titulo = "Pago de servicios públicos"
                         },
@@ -106,17 +102,9 @@ namespace proyectoef.Migrations
                         {
                             TareaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb911"),
                             CategoriaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb902"),
-                            FechaCreacion = new DateTime(2022, 9, 2, 17, 55, 14, 404, DateTimeKind.Local).AddTicks(2659),
+                            FechaCreacion = new DateTime(2022, 9, 2, 17, 26, 55, 343, DateTimeKind.Local).AddTicks(9193),
                             PrioridadTarea = 0,
                             Titulo = "Terminar de ver pelicula en Netflix"
-                        },
-                        new
-                        {
-                            TareaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb912"),
-                            CategoriaId = new Guid("4e26179c-6a70-41bc-8e78-69c6b77cb903"),
-                            FechaCreacion = new DateTime(2022, 9, 2, 17, 55, 14, 404, DateTimeKind.Local).AddTicks(2664),
-                            PrioridadTarea = 2,
-                            Titulo = "Terminar Reporte"
                         });
                 });
 
