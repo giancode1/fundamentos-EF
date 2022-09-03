@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;  //para que no de error [Key]
+using System.Text.Json.Serialization;
 
 namespace proyectoef.Models;
 
@@ -16,5 +17,6 @@ public class Categoria
     
     public int Peso {get; set;}
 
+    [JsonIgnore] //cuando retorne los datos, NO traer la coleccion de Tareas
     public virtual ICollection<Tarea> Tareas {get; set;}
 }

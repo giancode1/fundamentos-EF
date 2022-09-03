@@ -29,4 +29,29 @@ app.MapGet("/dbconexion", async([FromServices] TareasContext dbContext) =>
     //return Results.Ok("Base de datos en SQL Server: " + dbContext.Database.IsSqlServer());
 });
 
+//[desde los servicios] trae-TareaConetxt nombre=dbContext
+app.MapGet("/api/tareas", async ([FromServices] TareasContext dbContext)=>
+{
+    return Results.Ok(dbContext.Tareas);
+});
+
+//filtra datos con prioridad baja
+app.MapGet("/api/tareas/bajas", async ([FromServices] TareasContext dbContext)=>
+{
+    return Results.Ok(dbContext.Tareas.Where(p => p.PrioridadTarea == proyectoef.Models.Prioridad.Baja));
+});
+
+//filtra datos con prioridad baja  e incliuye la Categoria(virtual)
+app.MapGet("/api/tareas/bajas-extra", async ([FromServices] TareasContext dbContext)=>
+{
+    return Results.Ok(dbContext.Tareas.Include(proyectoef=>proyectoef.Categoria).Where(p => p.PrioridadTarea == proyectoef.Models.Prioridad.Baja));
+});
+
+//filtra en base a la prioridad
+app.MapGet("/api/tareas/prioridad/{id}", async ([FromServices] TareasContext dbContext, int id) => {
+    var data = dbContext.Tareas.Include(a => a.Categoria).Where(a => (int)a.PrioridadTarea == id);
+    return Results.Ok(data);
+});
+
+
 app.Run();
